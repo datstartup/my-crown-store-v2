@@ -11,7 +11,16 @@ import {
     signOut,
     onAuthStateChanged,
 } from 'firebase/auth';
-import { getFirestore, doc, setDoc, getDoc, collection, writeBatch, query, getDocs } from 'firebase/firestore';
+import {
+    getFirestore,
+    doc,
+    setDoc,
+    getDoc,
+    collection,
+    writeBatch,
+    query,
+    getDocs,
+} from 'firebase/firestore';
 // import { getAnalytics } from "firebase/analytics";
 
 // TODO: Add SDKs for Firebase products that you want to use
@@ -73,11 +82,16 @@ export const addCollectionAndDocuments = async (collectionKey, objectsToAdd) => 
 export const getCategoriesAndDocuments = async () => {
     const collectionRef = collection(db, 'categories');
     const q = query(collectionRef);
+    //test fetching error
+    // await Promise.reject(new Error('New error woops'));
     const querySnapshot = await getDocs(q);
     return querySnapshot.docs.map((docSnapshot) => docSnapshot.data());
 };
 // get data getting from authentication store them in firestore
-export const createUserDocumentFromAuth = async (userAuth, additionalInformation = {}) => {
+export const createUserDocumentFromAuth = async (
+    userAuth,
+    additionalInformation = {}
+) => {
     if (!userAuth) return;
     // check if there is a doc
     const userDocRef = doc(db, 'users', userAuth.uid);
@@ -121,4 +135,5 @@ export const signInAuthUserWithEmailAndPassword = async (email, password) => {
 export const signOutUser = () => signOut(auth);
 
 // run the callback function whenever the auth state changed
-export const onAuthStateChangedListener = (callback) => onAuthStateChanged(auth, callback);
+export const onAuthStateChangedListener = (callback) =>
+    onAuthStateChanged(auth, callback);
